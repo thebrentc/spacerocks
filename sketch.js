@@ -168,6 +168,18 @@ var missile = {
     }
 }
 
+var fireSound;
+var explosion;
+
+function preload() {
+    soundFormats('mp3');
+    
+    fireSound = loadSound('laser.mp3');
+    fireSound.setVolume(0.1);
+    
+    explosion = loadSound('explosion.mp3');
+    explosion.setVolume(0.1);
+}
 
 function setup()
 {
@@ -198,6 +210,7 @@ function draw()
             for (var n = 0; n < asteroidfield.asteroids.length; n++) {
                 var distance = dist(missile.point.x, missile.point.y, asteroidfield.asteroids[n].center.x, asteroidfield.asteroids[n].center.y);
                 if (distance < asteroidfield.asteroids[n].size) {
+                    explosion.play();
                     asteroidfield.remove(n);
                     spaceship.firing = false;
                     break;
@@ -210,7 +223,8 @@ function draw()
         for (var n = 0; n < asteroidfield.asteroids.length; n++) {
             console.log(spaceship.points[0].x);
             var distance = dist(spaceship.points[0].x, spaceship.points[0].y, asteroidfield.asteroids[n].center.x, asteroidfield.asteroids[n].center.y);
-            if (distance < asteroidfield.asteroids[n].size) {                    
+            if (distance < asteroidfield.asteroids[n].size) {
+                explosion.play();
                 gameon = false;
                 break;
             }
@@ -240,6 +254,7 @@ function keyPressed() {
 	{
         //if (!spaceship.firing) {
             spaceship.firing = true;
+            fireSound.play();
             missile.setup();
         //}
 	}
